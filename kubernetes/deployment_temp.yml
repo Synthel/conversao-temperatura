@@ -1,0 +1,33 @@
+# Deployment da API temperatura
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: temp
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: temp
+  template:
+    metadata:
+      labels:
+        app: temp
+    spec:
+      containers:
+      - name: temp
+        image: xsynthelx/temp
+        ports:
+        - containerPort: 8080
+--- 
+# Service com LB
+apiVersion: v1
+kind: Service
+metadata:
+  name: temp
+spec:
+  selector:
+    app: temp
+  ports:
+  - port: 80
+    targetPort: 8080
+  type: LoadBalancer
